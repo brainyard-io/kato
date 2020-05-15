@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+service Kato {
+	enum AccessType {
+		READ = 0;
+		MODIFY = 1;
+		DELETE = 2;
+		ADMIN = 3;
+	}
+
+	message Member {
+		required string id = 1;
+		required repeated AccessType rights = 2;
+	}
+
+	message Identifier {
+		enum IdentifierType {
+			MODEL = 0;
+			PROJECT = 1;
+			USER = 2;
+			TEAM = 3;
+			ORGANIZATION = 4;
+			GLOBAL = 5;
+		}
+		required string query = 1;
+		optional string id = 2;
+		required IdentifierType type = 3 [default = USER];
+	}
+
+	message Model {
+		enum ModelType {
+			ONNX = 0;
+			TENSORFLOW = 2;
+			TORCH = 3;
+			H2O = 4;
+			COREML = 5;
+			KERAS = 6;
+		}
+		required string id = 1;
+		required string name = 2;
+		optional string source = 3;
+		required string projectid = 4;
+		optional string license = 5;
+		required string prior = 6;
+		required ModelType type = 7 [default = ONNX];
+	}
+
+	message ModelList {
+		optional uint32 number = 1;
+		required repeated Model result = 2;
+	}
+
+	rpc ListModels(Identifier) returns (stream ModelList) {}
+	rpc GetModel(Identifier) returns (Model) {}
+	rpc PutModel(Model) returns (Model) {}
+	rpc DeleteModel(Model) returns (Model) {}
+
+	message Project {
+		required string id = 1;
+		required string name = 2;
+		optional string description = 3;
+		required bool public = 4;
+		required repeated Member users = 5;
+	}
+
+	message ProjectList {
+		optional uint32 number = 1;
+		required repeated Project result = 2;
+	}
+
+	rpc ListProjects(Identifier) returns (stream ProjectList) {}
+	rpc GetProject(Identifier) returns (Project) {}
+	rpc PutProject(Project) returns (Project) {}
+	rpc DeleteProject(Project) returns (Project) {}
+
+	message User {
+		required string id = 1;
+		required string name = 2;
+		optional string origin = 9;
+		optional bool premium = 8;
+	}
+
+	message UserList {
+		optional uint32 number = 1;
+		required repeated User result = 2;
+	}
+
+
+	rpc ListUser(Identifier) returns (stream UserList) {}
+	rpc GetUser(Identifier) returns (User) {}
+	rpc PutUser(User) returns (User) {}
+	rpc DeleteUser(User) returns (User) {}
+
+	message Team {
+		required string id = 1;
+		required string name = 2;
+		required repeated Member members = 3;
+		required repeated Project projects = 4;
+	}
+
+	message TeamList {
+		required uint32 number = 1;
+		required repeated Team result = 2;
+	}
+
+	rpc ListTeam(Identifier) returns (stream TeamList) {}
+	rpc GetTeam(Identifier) returns (Team) {}
+	rpc PutTeam(Team) returns (Team) {}
+	rpc DeleteTeam(Team) returns (Team) {}
+
+	message Organization {
+		required string id = 1;
+		required string name = 2;
+		optional repeated Member members = 3;
+		optional repeated Team teams = 4;
+	}
+
+	message OrganizationList {
+		required uint32 number = 1;
+		required repeated Organization result = 2;
+	}
+
+	rpc ListOrganizations(Identifier) returns (stream OrganizationList) {}
+	rpc GetOrganization(Identifier) returns (Organization) {}
+	rpc PutOrganization(Team) returns (Organization) {}
+	rpc DeleteOrganization(Team) returns (Organization) {}	
+}
