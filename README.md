@@ -1,2 +1,2 @@
 # kato
-A REST service for immutable management of AI models
+A service for immutable cloud-native management of AI models via gRPC
