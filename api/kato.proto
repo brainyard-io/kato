@@ -1,0 +1,137 @@
+// protoc -I kato/ kato/api/kato.proto --go_out=plugins=grpc:kato
+
+syntax = "proto3";
+package kato;
+option go_package = "github.com/brainyard-io/kato/api";
+
+enum AccessType {
+		READ = 0;
+		MODIFY = 1;
+		DELETE = 2;
+		ADMIN = 3;
+	}
+
+message Member {
+	string id = 1;
+	repeated AccessType rights = 2;
+}
+
+message Identifier {
+	enum IdentifierType {
+		MODEL = 0;
+		PROJECT = 1;
+		USER = 2;
+		TEAM = 3;
+		ORGANIZATION = 4;
+		GLOBAL = 5;
+	}
+	string query = 1;
+	string id = 2;
+	IdentifierType type = 3;
+}
+
+	message Model {
+	enum ModelType {
+		ONNX = 0;
+		TENSORFLOW = 2;
+		TORCH = 3;
+		H2O = 4;
+		COREML = 5;
+		KERAS = 6;
+		SKLEARN = 7;
+	}
+	string id = 1;
+	string name = 2;
+	string source = 3;
+	string projectid = 4;
+	string license = 5;
+	string prior = 6;
+	uint64 last_updated = 7;
+	ModelType type = 8;
+}
+
+message ModelList {
+	uint32 number = 1;
+	repeated Model result = 2;
+}
+
+message Project {
+	string id = 1;
+	string name = 2;
+	string description = 3;
+	bool public = 4;
+	uint64 last_updated = 5;
+	repeated Member users = 6;
+}
+
+message ProjectList {
+	uint32 number = 1;
+	repeated Project result = 2;
+}
+
+message User {
+	string id = 1;
+	string name = 2;
+	string origin = 3;
+	bool premium = 4;
+	uint64 last_updated = 5;
+}
+
+message UserList {
+	uint32 number = 1;
+	repeated User result = 2;
+}
+
+message Team {
+	string id = 1;
+	string name = 2;
+	repeated Member members = 3;
+	repeated Project projects = 4;
+	uint64 last_updated = 5;
+}
+
+message TeamList {
+	uint32 number = 1;
+	repeated Team result = 2;
+}
+
+message Organization {
+	string id = 1;
+	string name = 2;
+	repeated Member members = 3;
+	repeated Team teams = 4;
+	uint64 last_updated = 5;
+}
+
+message OrganizationList {
+	uint32 number = 1;
+	repeated Organization result = 2;
+}
+
+
+service Kato {
+	rpc ListModels(Identifier) returns (stream ModelList) {}
+	rpc GetModel(Identifier) returns (Model) {}
+	rpc PutModel(Model) returns (Model) {}
+	rpc DeleteModel(Model) returns (Model) {}
+
+	rpc ListProjects(Identifier) returns (stream ProjectList) {}
+	rpc GetProject(Identifier) returns (Project) {}
+	rpc PutProject(Project) returns (Project) {}
+	rpc DeleteProject(Project) returns (Project) {}
+
+	rpc ListUser(Identifier) returns (stream UserList) {}
+	rpc GetUser(Identifier) returns (User) {}
+	rpc PutUser(User) returns (User) {}
+	rpc DeleteUser(User) returns (User) {}
+
+	rpc ListTeam(Identifier) returns (stream TeamList) {}
+	rpc GetTeam(Identifier) returns (Team) {}
+	rpc PutTeam(Team) returns (Team) {}
+	rpc DeleteTeam(Team) returns (Team) {}
+
+	rpc ListOrganizations(Identifier) returns (stream OrganizationList) {}
+	rpc GetOrganization(Identifier) returns (Organization) {}
+	rpc PutOrganization(Team) returns (Organization) {}
+	rpc DeleteOrganization(Team) returns (Organization) {}	
+}
