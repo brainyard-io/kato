@@ -132,6 +132,6 @@ service Kato {
 
 	rpc ListOrganizations(Identifier) returns (stream OrganizationList) {}
 	rpc GetOrganization(Identifier) returns (Organization) {}
-	rpc PutOrganization(Team) returns (Organization) {}
-	rpc DeleteOrganization(Team) returns (Organization) {}	
+	rpc PutOrganization(Organization) returns (Organization) {}
+	rpc DeleteOrganization(Organization) returns (Organization) {}	
 }
