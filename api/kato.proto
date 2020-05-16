@@ -1,8 +1,6 @@
 // protoc -I kato/ kato/api/kato.proto --go_out=plugins=grpc:kato
 
 syntax = "proto3";
-package kato;
-option go_package = "api";
 
 enum AccessType {
 		READ = 0;
