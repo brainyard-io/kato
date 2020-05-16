@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 package kato;
-option go_package = "github.com/brainyard-io/kato/api";
+option go_package = "api";
 
 enum AccessType {
 		READ = 0;
