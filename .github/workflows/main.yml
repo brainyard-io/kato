@@ -26,4 +26,4 @@ jobs:
     - name: Genereate code for kato api
       uses: squzy/protoc-actions@v2.0.9
       with:
-        path: -I kato/ kato/api/kato.proto --go_out=plugins=grpc:kato
+        path: -I ./ api/kato.proto --go_out=plugins=grpc:./
