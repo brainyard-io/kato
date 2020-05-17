@@ -8,7 +8,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	//"github.com/golang/protobuf/proto"
-
+	
+	minio "github.com/minio/minio-go/v6"
 	pb "github.com/brainyard-io/kato/api"
 )
 
@@ -19,14 +20,18 @@ type ServerArgs struct {
 	cert	string
 	key		string
 	creds	string
-
-	s3AccessKey string
-	s3SecretAccessKey string
-
-	databaseHost	string
-	databasePort	string
-	databaseUser	string
-	databaseSecret	string
+	S3 struct {
+		AccessKeyID string
+		SecretAccessKey string
+		Endpoint string
+		SSL bool
+	}
+	Database struct {
+		Host	string
+		Port	string
+		User	string
+		Secret	string
+	}
 }
 
 func NewServer(args ServerArgs) *Server {
@@ -40,12 +45,12 @@ type Server struct {
 	args	ServerArgs
 	grpcOpts	[]grpc.ServerOption
 	listener	net.Listener
+	s3Client    *minio.Client
 }
 
 func (s *Server) Init() *Server {
 	//TODO: Add database
 	//TODO: grpc-server
-	//TODO: s3 connector
 	//TODO: nats-eventing
 	var err error
 	s.listener, err = net.Listen("tcp", s.getAddress())
@@ -65,7 +70,7 @@ func (s *Server) Init() *Server {
 		}
 		s.grpcOpts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
-	return s
+	return s.initS3Client()
 }
 
 func (s *Server) getAddress() string {
