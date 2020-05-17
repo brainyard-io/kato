@@ -24,6 +24,6 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Genereate code for kato api
-      uses: brainyard/protoc-actions@latest
+      uses: brainyard/protoc-actions@master
       with:
         path: -I ./ api/kato.proto --go_out=plugins=grpc:./
