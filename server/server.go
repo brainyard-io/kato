@@ -10,7 +10,8 @@ import (
 	//"github.com/golang/protobuf/proto"
 	
 	minio "github.com/minio/minio-go/v6"
-	pb "github.com/brainyard-io/kato/api"
+	pg    "github.com/go-pg/pg"
+	pb 	  "github.com/brainyard-io/kato/api"
 )
 
 type ServerArgs struct {
@@ -28,9 +29,9 @@ type ServerArgs struct {
 	}
 	Database struct {
 		Host	string
-		Port	string
 		User	string
 		Secret	string
+		Database string
 	}
 }
 
@@ -45,7 +46,8 @@ type Server struct {
 	args	ServerArgs
 	grpcOpts	[]grpc.ServerOption
 	listener	net.Listener
-	s3Client    *minio.Client
+	s3    		*minio.Client
+	db			*pg.DB
 }
 
 func (s *Server) Init() *Server {
@@ -70,7 +72,10 @@ func (s *Server) Init() *Server {
 		}
 		s.grpcOpts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
-	return s.initS3Client()
+	s.initS3Client()
+	s.initDatabaseClient()
+	s.initPrometheusEndpoint()
+	return s
 }
 
 func (s *Server) getAddress() string {
