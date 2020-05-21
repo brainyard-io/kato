@@ -1,8 +1,8 @@
-FROM golang:alpine AS build-env
+FROM golang:alpine AS builder
 ADD . /src
 RUN cd /src && go build -ldflags '-w -extldflags "-static"' -o kato
 
-FROM alpine
+FROM scratch
 WORKDIR /opt
-COPY --from=build-env /src/kato /opt/
+COPY --from=builder /src/kato /opt/
 ENTRYPOINT ./kato 
