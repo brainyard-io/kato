@@ -8,30 +8,30 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	//"github.com/golang/protobuf/proto"
-	
+
+	pb "github.com/brainyard-io/kato/api"
+	pg "github.com/go-pg/pg"
 	minio "github.com/minio/minio-go/v6"
-	pg    "github.com/go-pg/pg"
-	pb 	  "github.com/brainyard-io/kato/api"
 )
 
 // ServerArgs represents the arguments kato server starts with
 type ServerArgs struct {
-	port	string
+	port    string
 	address string
-	secure	bool
-	cert	string
-	key		string
-	creds	string
-	S3 struct {
-		AccessKeyID string
+	secure  bool
+	cert    string
+	key     string
+	creds   string
+	S3      struct {
+		AccessKeyID     string
 		SecretAccessKey string
-		Endpoint string
-		SSL bool
+		Endpoint        string
+		SSL             bool
 	}
 	Database struct {
-		Host	string
-		User	string
-		Secret	string
+		Host     string
+		User     string
+		Secret   string
 		Database string
 	}
 }
@@ -46,11 +46,11 @@ func NewServer(args ServerArgs) *Server {
 
 // Server structure
 type Server struct {
-	args	ServerArgs
-	grpcOpts	[]grpc.ServerOption
-	listener	net.Listener
-	s3    		*minio.Client
-	db			*pg.DB
+	args     ServerArgs
+	grpcOpts []grpc.ServerOption
+	listener net.Listener
+	s3       *minio.Client
+	db       *pg.DB
 }
 
 // Init initiates the server

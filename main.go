@@ -6,7 +6,7 @@ import (
 
 // Kato type
 type Kato struct {
-	mode	bool
+	mode bool
 }
 
 // main runs the go program
@@ -23,7 +23,7 @@ func (k *Kato) Init() {
 
 // Run runs kato
 func (k *Kato) Run() {
-	if(k.mode) {
+	if k.mode {
 		server.NewServer(server.ServerArgs{}).Serve()
 	}
 	return
