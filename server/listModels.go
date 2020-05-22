@@ -5,7 +5,7 @@ import (
 )
 
 
-// Returns a list of model ids
+// ListModels returns a list of model ids
 func (s *Server) ListModels(identifier *pb.Identifier, listModelsServer pb.Kato_ListModelsServer) error {
 	return nil
 }

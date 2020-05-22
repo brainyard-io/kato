@@ -6,7 +6,7 @@ import (
 	pb "github.com/brainyard-io/kato/api"
 )
 
-// Returns a User from database
+// GetUser returns a User from database
 func (s *Server) GetUser(ctx context.Context, identifier *pb.Identifier) (*pb.User, error) {
 	return &pb.User{}, nil
 }

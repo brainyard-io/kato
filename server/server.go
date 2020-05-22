@@ -14,7 +14,7 @@ import (
 	pb 	  "github.com/brainyard-io/kato/api"
 )
 
-// the arguments the server starts with
+// ServerArgs represents the arguments kato server starts with
 type ServerArgs struct {
 	port	string
 	address string
@@ -36,7 +36,7 @@ type ServerArgs struct {
 	}
 }
 
-// Returns a new server instance
+// NewServer returns a new server instance
 func NewServer(args ServerArgs) *Server {
 	s := &Server{
 		args: args,
@@ -44,7 +44,7 @@ func NewServer(args ServerArgs) *Server {
 	return s.Init()
 }
 
-// the server structure
+// Server structure
 type Server struct {
 	args	ServerArgs
 	grpcOpts	[]grpc.ServerOption
@@ -53,7 +53,7 @@ type Server struct {
 	db			*pg.DB
 }
 
-// Initiates the server
+// Init initiates the server
 func (s *Server) Init() *Server {
 	//TODO: Add database
 	//TODO: grpc-server
@@ -82,12 +82,12 @@ func (s *Server) Init() *Server {
 	return s
 }
 
-// returns an address from host and port
+// getAddress returns an address from host and port
 func (s *Server) getAddress() string {
 	return fmt.Sprintf("%s:%s", s.args.address, s.args.port)
 }
 
-// starts to serve grpc
+// Serve starts to serve grpc
 func (s *Server) Serve() {
 	grpcServer := grpc.NewServer(s.grpcOpts...)
 	pb.RegisterKatoServer(grpcServer, s)
