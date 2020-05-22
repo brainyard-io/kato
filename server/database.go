@@ -5,6 +5,7 @@ import (
     //"github.com/go-pg/pg/orm"
 )
 
+// Initiate the postgres Client
 func (s *Server) initDatabaseClient() *Server {
 	s.db = pg.Connect(&pg.Options{
 		User: s.args.Database.User,

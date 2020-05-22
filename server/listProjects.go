@@ -4,6 +4,7 @@ import (
 	pb "github.com/brainyard-io/kato/api"
 )
 
+// Returns a list of project ids
 func (s *Server) ListProjects(identifier *pb.Identifier, listProjectsServer pb.Kato_ListProjectsServer) error {
 	return nil
 }

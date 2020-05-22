@@ -5,6 +5,7 @@ import (
     "log"
 )
 
+// Initiates a S3 client based on minio
 func (s *Server) initS3Client() *Server {
 	// Initialize minio client object.
 	var err error
