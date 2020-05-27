@@ -1,0 +1,12 @@
+commonLabels:
+  app: kato
+
+resources:
+  - kato/config.yaml
+  - kato/deployment.yaml
+  - kato/secret.yaml
+  - kato/service.yaml
+  - opa/deployment.yaml
+  - opa/policy.yaml
+  - opa/service.yaml
+

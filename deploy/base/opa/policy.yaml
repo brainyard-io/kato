@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kato-policy
+  labels:
+    component: kato-opa
+data:
+  kato-policy.rego: |
+    

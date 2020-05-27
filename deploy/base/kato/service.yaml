@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  kato
+spec:
+  selector:
+    component: kato-server
+  type:  ClusterIP
+  ports:
+  - name:  grpc
+    port:  1212
+    targetPort:  grpc

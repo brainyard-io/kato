@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kato-opa
+  labels:
+    component: opa
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: opa
+  template:
+    metadata:
+      labels:
+        component: opa
+      name: opa
+    spec:
+      containers:
+      - name: opa
+        image: openpolicyagent/opa:latest
+        ports:
+        - name: http
+          containerPort: 8181
+        args:
+        - "run"
+        - "--ignore=.*"  # exclude hidden dirs created by Kubernetes
+        - "--server"
+        - "/policies"
+        resources:
+            requests:
+              cpu: 150m
+              memory: 250m
+            limits:
+              cpu: 250m
+              memory: 512m
+        volumeMounts:
+        - readOnly: true
+          mountPath: /policies
+          name: kato-policy
+      volumes:
+      - name: kato-policy
+        configMap:
+          name: kato-policy

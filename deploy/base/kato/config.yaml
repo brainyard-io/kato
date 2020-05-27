@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kato-config
+data:
+  s3-host:        s3.eu-west-1.amazonaws.com
+  s3-bucket:      kato
+  database-host:  kato-postgres
+  database:       kato
+  opa-host:       kato-opa

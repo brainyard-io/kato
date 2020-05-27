@@ -1,0 +1,91 @@
+apiVersions: apps/v1
+kind: Deployment
+metadata:
+  name: kato-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: kato-server
+  template:
+    metadata:
+      labels:
+        component: kato-server
+    spec:
+      containers:
+      - name: kato-server
+        image: brainyard/kato:latest
+        command:
+          - kato
+          - server
+          - --config-from-env
+        ports:
+        - name: grpc
+          port: 1212
+          protocol: TCP
+        resources:
+          requests:
+            memory: 512m
+            cpu: 250m
+          limits:
+            memory: 512m
+            cpu: 350m
+        env:
+        - name: KATO_S3_HOST
+          valueFrom:
+            configMapRef:
+              name: kato-config
+              key: s3-host
+        - name: KATO_S3_BUCKET
+          valueFrom:
+            configMapRef:
+              name: kato-config
+              key: s3-bucket
+        - name: KATO_S3_ACCESS_KEY
+          valueFrom:
+            secretRef:
+              name: kato-secret
+              key: s3AccessKey
+        - name: KATO_S3_SECRET_KEY
+          valueFrom:
+            secretRef:
+              name: kato-secret
+              key: s3SecretKey
+        - name: KATO_OPA_HOST
+          valueFrom:
+            configMapRef:
+              name: kato-config
+              key: opa-host
+        - name: KATO_DB_HOST
+          valueFrom:
+            configMapRef:
+              name: kato-config
+              key: database-host
+        - name: KATO_DB
+          valueFrom:
+            configMapRef:
+              name: kato-config
+              key: database
+        - name: KATO_DB_SECRET
+          valueFrom:
+            secretRef:
+              name: kato-secret
+              key: dbSecret
+        volumeMounts:
+          - name: cert
+            mountPath:  /etc/kato/cert
+          - name: key
+            mountPAth: /etc/kato/key
+      volumes:
+      - name: cert
+        secret:
+          secretName: kato-secret
+          items:
+          - key: cert
+            path: cert
+      - name: key
+        secret:
+          secretName: kato-secret
+          items:
+          - key: key
+            path: key
