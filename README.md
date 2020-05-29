@@ -8,4 +8,7 @@ A service for immutable cloud-native management of AI models via gRPC
 [![Go Report Card](https://goreportcard.com/badge/github.com/brainyard-io/kato)](https://goreportcard.com/report/github.com/brainyard-io/kato)
 [![CodeFactor](https://www.codefactor.io/repository/github/brainyard-io/kato/badge)](https://www.codefactor.io/repository/github/brainyard-io/kato)
 
+# Architecture
+<img src="assets/ref_arch_3d.svg" alt="architecture diagram" />  
+
 # ⚠️ THIS PROJECT IS IN HEAVY DEVELOPMENT ⚠️
