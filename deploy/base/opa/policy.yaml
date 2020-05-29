@@ -6,3 +6,4 @@ metadata:
     component: kato-opa
 data:
   kato-policy.rego: |
+    # add rego policy
